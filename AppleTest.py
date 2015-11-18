@@ -18,9 +18,7 @@ top.wm_title("Apple Tester")
 #Sets the apple background image
 bkg_img = Image.open('/home/bturcott/Pictures/apple_small.png')
 tkimage = ImageTk.PhotoImage(bkg_img)
-#Tkinter.Label(top,image = tkimage).place(x=0, y=0, relwidth=1, relheight=1)
 Tkinter.Label(top,image = tkimage).grid(row=0, column=3, rowspan=3, sticky=W+E+N+S, padx=5, pady=5)
-
 
 #Label for IP Address
 label1 = Label(top, text = "Enter Atlas IP Address:")
@@ -31,7 +29,7 @@ entry1 = Entry(top, bd = 4)
 entry1.grid(row=0, column=1, sticky=S)
 
 #Label for IP Address
-label2 = Label(top, text = "Enter String to send:")
+label2 = Label(top, text = "Enter String to Send:")
 label2.grid(row=1, column=0, sticky=E+N)
 
 #Textbox for IP Entry
@@ -54,7 +52,7 @@ def sendString():
 			if sent == 0:
 				raise RuntimeError("socket connection broken")
 			totalsent = totalsent + sent 
-	tkMessageBox.showinfo("Atlas Connection Status", "You are not connected, please connect to the Atlas.")
+	tkMessageBox.showinfo("Atlas Connection Status", "You are not connected, please connect to Atlas.")
 
 #Button for sending data
 button1 = Tkinter.Button(top,text = "Send", command=sendString)

@@ -9,6 +9,7 @@ from PIL import Image, ImageTk
 
 #initialize socket connection
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+connected = False;
 
 #Creates the window and labels it
 top = Tkinter.Tk()
@@ -40,18 +41,20 @@ entry2.grid(row=1, column=1, sticky=N)
 def atlasConnect():
 	host = entry1.get()
 	client_socket.connect((host, 5000))
-	tkMessageBox.showinfo("Atlas Connection", "You are connected.")
+	connected = True
+	tkMessageBox.showinfo("Atlas Connection Status", "You are connected.")
 
 def sendString():
 	totalsent = 0
 	msg = entry2.get()
-	MSGLEN = len(msg)
-	while totalsent < MSGLEN:
-		sent = client_socket.send(msg[totalsent:])
-		if sent == 0:
-			raise RuntimeError("socket connection broken")
-		totalsent = totalsent + sent 
-
+	if connected == True:
+		MSGLEN = len(msg)
+		while totalsent < MSGLEN:
+			sent = client_socket.send(msg[totalsent:])
+			if sent == 0:
+				raise RuntimeError("socket connection broken")
+			totalsent = totalsent + sent 
+	tkMessageBox.showinfo("Atlas Connection Status", "You are not connected, please connect to the Atlas.")
 
 #Button for sending data
 button1 = Tkinter.Button(top,text = "Send", command=sendString)

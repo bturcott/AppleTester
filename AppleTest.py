@@ -9,7 +9,7 @@ from PIL import Image, ImageTk
 
 #initialize socket connection
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connected = False;
+
 
 #Creates the window and labels it
 top = Tkinter.Tk()
@@ -36,26 +36,30 @@ label2.grid(row=1, column=0, sticky=E+N)
 entry2 = Entry(top, bd = 4)
 entry2.grid(row=1, column=1, sticky=N)
 
+
 def atlasConnect():
 	host = entry1.get()
-	client_socket.connect((host, 5000))
-	connected = True
+	client_socket.connect((host, 8000))
 	tkMessageBox.showinfo("Atlas Connection Status", "You are connected.")
+
+def readString():
+	data = client_socket.recv(512)
+	tkMessageBox.showinfo("Incoming Message", data) 
+		
 
 def sendString():
 	totalsent = 0
 	msg = entry2.get()
-	if connected == True:
-		MSGLEN = len(msg)
-		while totalsent < MSGLEN:
-			sent = client_socket.send(msg[totalsent:])
-			if sent == 0:
-				raise RuntimeError("socket connection broken")
-			totalsent = totalsent + sent 
-	tkMessageBox.showinfo("Atlas Connection Status", "You are not connected, please connect to Atlas.")
+	MSGLEN = len(msg)
+	while totalsent < MSGLEN:
+		sent = client_socket.send(msg[totalsent:])
+		if sent == 0:
+			raise RuntimeError("socket connection broken")
+		totalsent = totalsent + sent
+	tkMessageBox.showinfo("Message Status", "Your message has been sent.") 
 
-#Button for sending data
-button1 = Tkinter.Button(top,text = "Send", command=sendString)
+#Button for reading data
+button1 = Tkinter.Button(top,text = "Read", command=readString)
 button1.grid(row=2,column=1, sticky=N+E)
 
 #Button for connecting to the Atlas
